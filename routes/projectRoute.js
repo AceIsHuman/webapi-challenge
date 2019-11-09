@@ -19,6 +19,9 @@ router.get('/:id', validateProjectId, async (req, res) => {
   return res.status(200).json(req.project);
 });
 
+// CREATE A NEW PROJECT
+router.post('/', )
+
 //  MIDDLEWARE
 async function validateProjectId(req, res, next) {
   const id = req.params.id;
@@ -30,6 +33,14 @@ async function validateProjectId(req, res, next) {
   } catch (err) {
     return res.status(500).json({ errorMessage: "Internal Server Error" });
   }
+  next();
+}
+
+function validateProject(req, res, next) {
+  if (!req.body) return res.status(400).json({ message: "Provide project information."});
+  const { name, description } = req.body;
+  if (!name) return res.status(400).json({ message: "Missing required name."});
+  if (!description) return res.status(400).json({ message: "Missing required description."});
   next();
 }
 
