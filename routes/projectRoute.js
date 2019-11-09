@@ -51,7 +51,18 @@ router.delete('/:id', validateProjectId, async (req, res) => {
     catch(err) {
       res.status(500).json({ errorMessage: "Unable to remove project"})
   }
-})
+});
+
+router.get('/:id/actions', validateProjectId, async (req, res) => {
+  try {
+    const actions = await projectsModel.getProjectActions(req.params.id);
+    if (actions.length === 0) return res.status(404).json({ message: "There are no actions on this project." });
+    else return res.status(200).json(actions);
+  }
+  catch(err) {
+    res.status(500).json({ errorMessage: "Unable to get actions." });
+  }
+});
 
 //  MIDDLEWARE
 async function validateProjectId(req, res, next) {
