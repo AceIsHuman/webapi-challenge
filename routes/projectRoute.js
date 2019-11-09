@@ -20,7 +20,15 @@ router.get('/:id', validateProjectId, async (req, res) => {
 });
 
 // CREATE A NEW PROJECT
-router.post('/', )
+router.post('/', validateProject, async (req, res) => {
+  try {
+    const project = await projectsModel.insert(req.body);
+    return res.status(201).json(project);
+  }
+  catch (err) {
+    return res.status(500).json({ errorMessage: "An error occurred while creating a new project." });
+  }
+})
 
 //  MIDDLEWARE
 async function validateProjectId(req, res, next) {
@@ -37,8 +45,8 @@ async function validateProjectId(req, res, next) {
 }
 
 function validateProject(req, res, next) {
-  if (!req.body) return res.status(400).json({ message: "Provide project information."});
   const { name, description } = req.body;
+  if (!name && !description) return res.status(400).json({ message: "Provide project information."});
   if (!name) return res.status(400).json({ message: "Missing required name."});
   if (!description) return res.status(400).json({ message: "Missing required description."});
   next();
