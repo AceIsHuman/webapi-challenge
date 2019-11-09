@@ -1,5 +1,6 @@
 const express = require('express');
 const actionsModel = require('../data/helpers/actionModel');
+const projectsModel = require('../data/helpers/projectModel');
 
 const router = express.Router();
 
@@ -17,6 +18,16 @@ router.get('/', async (req, res) => {
 // GET ACTION BY ID
 router.get('/:id', validateActionId, (req, res) => {
   return res.status(200).json(req.action);
+});
+
+// ADD AN ACTION
+router.post('/', validateAction, validateProjectId, async (req, res) => {
+  try {
+    const action = await actionsModel.insert(req.body);
+    return res.status(200).json(action);
+  } catch(err) {
+    return res.status(500).json({ errorMessage: "Unable to create action." });
+  }
 });
 
 // MIDDLEWARE
