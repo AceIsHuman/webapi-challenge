@@ -14,4 +14,12 @@ router.get('/', async (req, res) => {
   }
 });
 
+// MIDDLEWARE
+async function validateActionId(req, res, next) {
+  const action = await actionsModel.get(req.id);
+  action ?
+    (req.action = action, next()) :
+    res.status(404).json("Invalid action id.");
+}
+
 module.exports = router;
