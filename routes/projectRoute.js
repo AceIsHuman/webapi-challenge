@@ -39,6 +39,18 @@ router.put('/:id', validateProjectId, validateProject, async (req, res) => {
   catch (err){
     return res.status(500).json({ errorMessage: "Unable to update project" });
   }
+});
+
+router.delete('/:id', validateProjectId, async (req, res) => {
+  try {
+    const removed = await projectsModel.remove(req.params.id);
+    removed ?
+      res.status(204).end() :
+      res.status(500).json({ errorMessage: "Unable to remove project"})
+    }
+    catch(err) {
+      res.status(500).json({ errorMessage: "Unable to remove project"})
+  }
 })
 
 //  MIDDLEWARE
