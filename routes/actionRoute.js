@@ -27,4 +27,24 @@ async function validateActionId(req, res, next) {
     res.status(404).json("Invalid action id.");
 }
 
+async function validateProjectId(req, res, next) {
+  const id = req.body.project_id;
+  try {
+    const project = await projectsModel.get(id);
+    project
+      ? (req.project = project)
+      : res.status(400).json({ message: "Invalid project id" });
+  } catch (err) {
+    return res.status(500).json({ errorMessage: "Internal Server Error" });
+  }
+  next();
+}
+
+function validateAction(req, res, next) {
+  const {project_id, description, notes} = req.body;
+  if (!project_id || !description || !notes) return res.status(400).json({ message: "Provide project_id, description, and notes fields." });
+  if (description.length > 128) return res.status(400).json({ message: "Description must not be longer than 128 characters" });
+  next();
+}
+
 module.exports = router;
