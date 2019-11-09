@@ -15,16 +15,22 @@ router.get('/', async (req, res) => {
 });
 
 // GET PROJECT BY ID
-router.get('/:id', async (req, res) => {
+router.get('/:id', validateProjectId, async (req, res) => {
+  return res.status(200).json(req.project);
+});
+
+//  MIDDLEWARE
+async function validateProjectId(req, res, next) {
   const id = req.params.id;
   try {
     const project = await projectsModel.get(id);
-    if (project) return res.status(200).json(project);
-    else return res.status(404).json({ message: "A project with that id does not exist." });
+    project
+      ? (req.project = project)
+      : res.status(400).json({ message: "Invalid project id" });
+  } catch (err) {
+    return res.status(500).json({ errorMessage: "Internal Server Error" });
   }
-  catch (err) {
-    return res.status(500).json({ errorMessage: "Unable to retrive project." });
-  }
-});
+  next();
+}
 
 module.exports = router;
