@@ -40,6 +40,18 @@ router.put('/:id', validateActionId, validateAction, async (req, res) => {
   }
 });
 
+// REMOVE AN ACTION
+router.delete('/:id', validateActionId, async (req, res) => {
+  try {
+    const removed = await actionsModel.remove(req.params.id);
+    removed ?
+      res.status(204).end()
+      : res.status(500).json({ errorMessage: "Unable to remove action." })
+  } catch(err) {
+    res.status(500).json({ errorMessage: "Unable to remove action." });
+  }
+});
+
 // MIDDLEWARE
 async function validateActionId(req, res, next) {
   const action = await actionsModel.get(req.params.id);
