@@ -14,9 +14,14 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET ACTION BY ID
+router.get('/:id', validateActionId, (req, res) => {
+  return res.status(200).json(req.action);
+});
+
 // MIDDLEWARE
 async function validateActionId(req, res, next) {
-  const action = await actionsModel.get(req.id);
+  const action = await actionsModel.get(req.params.id);
   action ?
     (req.action = action, next()) :
     res.status(404).json("Invalid action id.");
