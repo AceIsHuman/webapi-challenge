@@ -30,6 +30,16 @@ router.post('/', validateAction, validateProjectId, async (req, res) => {
   }
 });
 
+// UPDATE AN ACTION
+router.put('/:id', validateActionId, validateAction, async (req, res) => {
+  try {
+    const updatedAction = await actionsModel.update(req.params.id, req.body);
+    return res.status(200).json(updatedAction);
+  } catch(err) {
+    return res.status(500).json({ errorMessage: "Unable to update action." })
+  }
+});
+
 // MIDDLEWARE
 async function validateActionId(req, res, next) {
   const action = await actionsModel.get(req.params.id);
