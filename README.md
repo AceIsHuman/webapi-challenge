@@ -26,13 +26,23 @@ Demonstrate your understanding of this Sprint's concepts by answering the follow
 
 - [ ] Mention two parts of Express that you learned about this week.
 
+    Express allows us to use middleware by chaining them inside of our pipeline. We are also able to break our application into smaller parts thanks to routing with Express.
+
 - [ ] Describe Middleware?
+
+    Middleware are functions that takes the request and response objects of an HTTP request and can operate on them, or send a response back to the client.
 
 - [ ] Describe a Resource?
 
+    A resource is the data held in the database of our API.
+
 - [ ] What can the API return to help clients know if a request was successful?
 
+    We can return a status code of 200
+
 - [ ] How can we partition our application into sub-applications?
+
+    We can use routing to break our application into smaller parts.1
 
 ## Project Setup
 
