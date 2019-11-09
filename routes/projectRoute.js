@@ -28,6 +28,17 @@ router.post('/', validateProject, async (req, res) => {
   catch (err) {
     return res.status(500).json({ errorMessage: "An error occurred while creating a new project." });
   }
+});
+
+// UPDATE A PROJECT
+router.put('/:id', validateProjectId, validateProject, async (req, res) => {
+  try {
+    const project = await projectsModel.update(req.params.id, req.body);
+    return res.status(200).json(project);
+  }
+  catch (err){
+    return res.status(500).json({ errorMessage: "Unable to update project" });
+  }
 })
 
 //  MIDDLEWARE
